@@ -9,9 +9,9 @@ warning off;
 addpath(genpath(pwd));
 t_start = clock;
 %% params for data
-data_type = 'IP';    % 待处理的数据类型 - 'IP' or 'PU' or 'PC'
-num_classes = 16;    % 数据的类别数目 - 16 or 9 or 9
-num_bands = 200;    % 200 or 103 or 102
+data_type = 'IP';    % 待处理的数据类型 - 'IP' or 'PU' or 'PC' or 'SA'
+num_classes = 16;    % 数据的类别数目 - 16 or 9 or 9 or 16
+num_bands = 200;    % 200 or 103 or 102 or 204
 data_name = [data_type,'_',num2str(num_classes)];
 
 Num_sp = 300;    % 300 or 500 or 700 or 900
@@ -20,9 +20,11 @@ bands_sel_file = fullfile(pwd, ['bands_select_info_', data_name, '_SP_', num2str
 mkdir(bands_sel_file);
 
 %% load data
-[data_M, img_PCA, label_M] = load_data_func(data_type, num_classes);
+[data_vec, img_PCA, label_inds] = load_data_func(data_type, num_classes);
 % superpixel
 SP_Map = superpixel_func(img_PCA, Num_sp);
+SP_vec = SP_Map(:);
+SP_vec = SP_vec(label_inds);
 
 for ii_trial = 1:5
     for ii_num_bands = num_bands_set
@@ -33,12 +35,11 @@ for ii_trial = 1:5
         GGAP = .9;                                  % Generation gap, how many new individuals are created
         NVAR1 = num_bands;                          % Number of variables for data
         rate_NumPm = 0.2;                           
-                
+        
         opts.NVAR1 = NVAR1;
         
-        data_obj.data_M = data_M;
-        data_obj.label_M = label_M;
-        data_obj.sp_map = SP_Map;
+        data_obj.data_vec = data_vec;
+        data_obj.sp_vec = SP_vec;
         
         %% GA
         % Initialise population
