@@ -26,6 +26,7 @@ For example, if you want to perform SSGA:
 ## References
 
 [1] The code of superpixel segmentation (i.e., the filefolder of `./EntropyRateSuperpixel-master`) is cloned from https://github.com/mingyuliutw/EntropyRateSuperpixel
+
 [2] The original GA  (i.e., the filefolder of `./gatbx`) is based on Shaffield Toolbox. The more information can be found at `./gatbx/readme.txt`
 
 
